@@ -252,6 +252,9 @@ function handleGesture() {
         }
     }
     document.getElementById("score").innerText = score;
+    updateScore();
+    updateHighscore(); // Check and update highscore    
+    
 
     if (isGameOver()) {
         gameOver = true;
