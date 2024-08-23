@@ -227,3 +227,13 @@ function handleGesture() {
     }
     document.getElementById("score").innerText = score;
 }
+
+// Prevent default scrolling on touch
+document.body.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
+// Optional: Also disable double-tap to zoom
+document.body.addEventListener('gesturestart', function(e) {
+    e.preventDefault();
+});

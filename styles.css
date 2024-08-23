@@ -54,6 +54,9 @@ button {
 
 /* Mobile responsiveness */
 @media (max-width: 600px) {
+    body{
+        overflow: hidden; /* Prevent scrolling */
+    }
     #board {
         width: 300px;
         height: 300px;
