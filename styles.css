@@ -52,16 +52,27 @@ button {
     cursor: pointer;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    #board {
-        width: 300px;
-        height: 300px;
-    }
 
-    .tile {
-        width: calc(100% / 4 - 10px); /* Responsive width */
-        height: calc(100% / 4 - 10px); /* Responsive height */
-        font-size: 20px; /* Adjust font size for mobile */
+@media (max-width: 600px) {
+    #board{
+        width:90vw;
+        background-color: #cdc1b5;
+        border: 6px solid #bbada0;
+        margin: 20px auto; /* Add some margin for spacing */
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+    }
+    .tile{
+        width:21.5%;
+        height:20%;
+        margin: 1%; /* Add some margin between tiles */
+        border: 2px solid #bbada0;
+        font-size: calc(10px + 2vw); /* Responsive font size */
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease;
     }
 }

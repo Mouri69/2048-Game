@@ -2,6 +2,11 @@ var board;
 var score = 0;
 var rows = 4;
 var columns = 4;
+var touchstartX = 0;
+var touchstartY = 0;
+var touchendX = 0;
+var touchendY = 0;
+
 
 window.onload = function() {
     setGame();
@@ -186,4 +191,39 @@ function hasEmptyTile() {
         }
     }
     return false;
+}
+
+document.addEventListener('touchstart', function(e) {
+    touchstartX = e.changedTouches[0].screenX;
+    touchstartY = e.changedTouches[0].screenY;
+}, false);
+
+document.addEventListener('touchend', function(e) {
+    touchendX = e.changedTouches[0].screenX;
+    touchendY = e.changedTouches[0].screenY;
+    handleGesture();
+}, false);
+
+function handleGesture() {
+    var dx = touchendX - touchstartX;
+    var dy = touchendY - touchstartY;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) {
+            slideRight();
+            setTwo();
+        } else {
+            slideLeft();
+            setTwo();
+        }
+    } else {
+        if (dy > 0) {
+            slideDown();
+            setTwo();
+        } else {
+            slideUp();
+            setTwo();
+        }
+    }
+    document.getElementById("score").innerText = score;
 }
