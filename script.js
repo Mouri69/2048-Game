@@ -6,10 +6,17 @@ var touchstartX = 0;
 var touchstartY = 0;
 var touchendX = 0;
 var touchendY = 0;
+var highscore = localStorage.getItem('highscore') || 0; // Retrieve highscore from localStorage or set to 0
+var gameOver = false; // Add a flag to track game over
 
 
 window.onload = function() {
     setGame();
+    updateHighscore(); // Initialize high score display
+
+    document.getElementById("restart-button").addEventListener("click", function() {
+        restartGame();
+    });
 }
 
 function setGame() {
@@ -74,8 +81,27 @@ document.addEventListener('keyup', (e) => {
         slideDown();
         setTwo();
     }
-    document.getElementById("score").innerText = score;
+    updateScore();
+    updateHighscore(); // Check and update highscore
+
+    if (isGameOver()) {
+        gameOver = true;
+        showGameOver();
+    }
 })
+
+function updateScore() {
+    document.getElementById("score").innerText = score;
+}
+
+function updateHighscore() {
+    if (score > highscore) {
+        highscore = score;
+        localStorage.setItem('highscore', highscore); // Save highscore to localStorage
+    }
+    document.getElementById("highscore").innerText = highscore;
+}
+
 
 function filterZero(row){
     return row.filter(num => num != 0); //create new array of all nums != 0
@@ -226,6 +252,11 @@ function handleGesture() {
         }
     }
     document.getElementById("score").innerText = score;
+
+    if (isGameOver()) {
+        gameOver = true;
+        showGameOver();
+    }
 }
 
 // Prevent default scrolling on touch
@@ -237,3 +268,78 @@ document.body.addEventListener('touchmove', function(e) {
 document.body.addEventListener('gesturestart', function(e) {
     e.preventDefault();
 });
+
+
+//Checks for gameover
+function isGameOver() {
+    // Check if there are empty tiles
+    if (hasEmptyTile()) {
+        return false;
+    }
+
+    // Check for possible merges
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns - 1; c++) {
+            if (board[r][c] === board[r][c + 1]) {
+                return false;
+            }
+        }
+    }
+
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows - 1; r++) {
+            if (board[r][c] === board[r + 1][c]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function showGameOver() {
+    // Check if the game over message already exists
+    if (document.getElementById("game-over")) {
+        return;
+    }
+
+    let gameOverDiv = document.createElement("div");
+    gameOverDiv.id = "game-over";
+    gameOverDiv.innerText = "Game Over!";
+    document.getElementById("board").append(gameOverDiv);
+}
+
+function restartGame() {
+    // Reset the board
+    board = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ];
+
+    // Reset the score
+    score = 0;
+    updateScore();
+
+    // Clear the board display
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+            let tile = document.getElementById(r.toString() + "-" + c.toString());
+            updateTile(tile, board[r][c]);
+        }
+    }
+
+    // Create two new tiles
+    setTwo();
+    setTwo();
+
+     // Remove the Game Over message if it exists
+    let gameOverMessage = document.getElementById("game-over");
+    if (gameOverMessage) {
+        gameOverMessage.remove();
+    }
+
+    // Reset the game over flag
+    gameOver = false;
+}
