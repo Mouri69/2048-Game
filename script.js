@@ -91,6 +91,7 @@ document.addEventListener('keyup', (e) => {
 
     if (isGameOver()) {
         gameOver = true;
+        console.log("Game Over detected");
         showGameOver();
     }
 });
@@ -109,9 +110,6 @@ function checkWin() {
     return false;
 }
 
-function showWinMessage() {
-    alert("Congratulations! You reached 2048!");
-}
 
 function triggerConfetti() {
     // Confetti animation using the canvas-confetti library
@@ -304,32 +302,23 @@ function handleGesture() {
     }
 
     if (moved) {
-        setTwo(); // Only add a new tile if a move happened
-        updateScore();
-        updateHighscore(); // Check and update high score display
-
-        // Check for win condition (2048)
-        if (checkWin()) {
-            gameOver = true;
-            showWinMessage();
-            return; // Stop further execution if the player has won
-        }
-
-        // Check for game over condition 
-        
-        if (isGameOver()) {
-            gameOver = true;
-            showGameOver();
-        }
+        setTwo();
     }
 
-    // Update the score display
-    document.getElementById("score").innerText = score;
-}
+    updateScore();
+    updateHighscore(); // Check and update high score
+
+    if (isGameOver()) {
+        gameOver = true;
+        console.log("Game Over detected");
+        showGameOver();
+    }
+};
 
 
 function showWinMessage() {
-    alert("Congratulations! You reached 2048!");
+    triggerConfetti();
+    showGameOver();
 }
 
 function triggerConfetti() {
@@ -421,16 +410,4 @@ function restartGame() {
 
     // Reset the game over flag
     gameOver = false;
-}
-
-function showWinMessage() {
-    // Check if the win message already exists
-    if (document.getElementById("win-message")) {
-        return;
-    }
-
-    let winMessageDiv = document.createElement("div");
-    winMessageDiv.id = "win-message";
-    winMessageDiv.innerText = "Congratulations! You've reached 2048!";
-    document.getElementById("board").append(winMessageDiv);
 }
