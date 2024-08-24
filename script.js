@@ -64,31 +64,30 @@ function updateTile(tile, num) {
 }
 
 document.addEventListener('keyup', (e) => {
-    if (e.code == "ArrowLeft") {
-        slideLeft();
-        setTwo();
-    }
-    else if (e.code == "ArrowRight") {
-        slideRight();
-        setTwo();
-    }
-    else if (e.code == "ArrowUp") {
-        slideUp();
-        setTwo();
+    let moved = false; // Flag to check if a move actually happened
 
+    if (e.code == "ArrowLeft") {
+        moved = slideLeft(); // Update flag based on the slide function return
+    } else if (e.code == "ArrowRight") {
+        moved = slideRight();
+    } else if (e.code == "ArrowUp") {
+        moved = slideUp();
+    } else if (e.code == "ArrowDown") {
+        moved = slideDown();
     }
-    else if (e.code == "ArrowDown") {
-        slideDown();
+
+    if (moved) {
         setTwo();
     }
+
     updateScore();
-    updateHighscore(); // Check and update highscore
+    updateHighscore(); // Check and update high score
 
     if (isGameOver()) {
         gameOver = true;
         showGameOver();
     }
-})
+});
 
 function updateScore() {
     document.getElementById("score").innerText = score;
@@ -125,67 +124,85 @@ function slide(row) {
     return row;
 }
 
+
 function slideLeft() {
+    let moved = false; // Initialize moved as false
     for (let r = 0; r < rows; r++) {
         let row = board[r];
+        let originalRow = [...row]; // Copy the current row for comparison
         row = slide(row);
         board[r] = row;
-        for (let c = 0; c < columns; c++){
+        for (let c = 0; c < columns; c++) {
             let tile = document.getElementById(r.toString() + "-" + c.toString());
             let num = board[r][c];
             updateTile(tile, num);
         }
+        if (JSON.stringify(originalRow) !== JSON.stringify(row)) {
+            moved = true; // Set moved to true if the row has changed
+        }
     }
+    return moved; // Return if a move happened
 }
 
 function slideRight() {
+    let moved = false; // Initialize moved as false
     for (let r = 0; r < rows; r++) {
-        let row = board[r];         //[0, 2, 2, 2]
-        row.reverse();              //[2, 2, 2, 0]
-        row = slide(row)            //[4, 2, 0, 0]
-        board[r] = row.reverse();   //[0, 0, 2, 4];
-        for (let c = 0; c < columns; c++){
+        let row = board[r]; 
+        let originalRow = [...row]; // Copy the current row for comparison
+        row.reverse();
+        row = slide(row);
+        row.reverse();
+        board[r] = row;
+        for (let c = 0; c < columns; c++) {
             let tile = document.getElementById(r.toString() + "-" + c.toString());
             let num = board[r][c];
             updateTile(tile, num);
         }
+        if (JSON.stringify(originalRow) !== JSON.stringify(row)) {
+            moved = true; // Set moved to true if the row has changed
+        }
     }
+    return moved; // Return if a move happened
 }
 
 function slideUp() {
+    let moved = false; // Initialize moved as false
     for (let c = 0; c < columns; c++) {
         let row = [board[0][c], board[1][c], board[2][c], board[3][c]];
+        let originalRow = [...row]; // Copy the current row for comparison
         row = slide(row);
-        // board[0][c] = row[0];
-        // board[1][c] = row[1];
-        // board[2][c] = row[2];
-        // board[3][c] = row[3];
-        for (let r = 0; r < rows; r++){
+        for (let r = 0; r < rows; r++) {
             board[r][c] = row[r];
             let tile = document.getElementById(r.toString() + "-" + c.toString());
             let num = board[r][c];
             updateTile(tile, num);
         }
+        if (JSON.stringify(originalRow) !== JSON.stringify(row)) {
+            moved = true; // Set moved to true if the row has changed
+        }
     }
+    return moved; // Return if a move happened
 }
 
 function slideDown() {
+    let moved = false; // Initialize moved as false
     for (let c = 0; c < columns; c++) {
         let row = [board[0][c], board[1][c], board[2][c], board[3][c]];
+        let originalRow = [...row]; // Copy the current row for comparison
         row.reverse();
         row = slide(row);
         row.reverse();
-        // board[0][c] = row[0];
-        // board[1][c] = row[1];
-        // board[2][c] = row[2];
-        // board[3][c] = row[3];
-        for (let r = 0; r < rows; r++){
+        for (let r = 0; r < rows; r++) {
             board[r][c] = row[r];
             let tile = document.getElementById(r.toString() + "-" + c.toString());
             let num = board[r][c];
             updateTile(tile, num);
         }
+        if (JSON.stringify(originalRow) !== JSON.stringify(row)) {
+            moved = true; // Set moved to true if the row has changed
+        }
     }
+    return moved; // Return if a move happened
 }
 
 function setTwo() {
