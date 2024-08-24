@@ -396,7 +396,16 @@ function showGameOver() {
     let gameOverDiv = document.createElement("div");
     gameOverDiv.id = "game-over";
     gameOverDiv.innerText = "Game Over!";
-    document.getElementById("board").append(gameOverDiv);
+    gameOverDiv.style.position = "fixed";
+    gameOverDiv.style.top = "50%";
+    gameOverDiv.style.left = "50%";
+    gameOverDiv.style.transform = "translate(-50%, -50%)";
+    gameOverDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    gameOverDiv.style.color = "white";
+    gameOverDiv.style.padding = "20px";
+    gameOverDiv.style.fontSize = "2em";
+    gameOverDiv.style.zIndex = "1000"; // Ensure it appears above other content
+    document.body.appendChild(gameOverDiv);
 }
 
 function restartGame() {
