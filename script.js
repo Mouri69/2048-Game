@@ -59,12 +59,18 @@ function updateTile(tile, num) {
             tile.classList.add("x"+num.toString());
         } else {
             tile.classList.add("x8192");
-        }                
+        } 
+          // Check for the win condition
+          if (num === 2048 && !gameOver) {
+            gameOver = true;
+            showWinMessage(); // Display win message
+        }               
     }
 }
 
 document.addEventListener('keyup', (e) => {
     let moved = false; // Flag to check if a move actually happened
+    if (gameOver) return; // Prevent further moves if game is over
 
     if (e.code == "ArrowLeft") {
         moved = slideLeft(); // Update flag based on the slide function return
@@ -250,33 +256,51 @@ document.addEventListener('touchend', function(e) {
 function handleGesture() {
     var dx = touchendX - touchstartX;
     var dy = touchendY - touchstartY;
+    let moved = false; // Flag to check if a move actually happened
+
+    if (gameOver) return; // Prevent further moves if game is over
 
     if (Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal move
         if (dx > 0) {
-            slideRight();
-            setTwo();
+            // Slide right
+            moved = slideRight();
         } else {
-            slideLeft();
-            setTwo();
+            // Slide left
+            moved = slideLeft();
         }
     } else {
+        // Vertical move
         if (dy > 0) {
-            slideDown();
-            setTwo();
+            // Slide down
+            moved = slideDown();
         } else {
-            slideUp();
-            setTwo();
+            // Slide up
+            moved = slideUp();
         }
     }
-    document.getElementById("score").innerText = score;
-    updateScore();
-    updateHighscore(); // Check and update highscore    
-    
 
-    if (isGameOver()) {
-        gameOver = true;
-        showGameOver();
+    if (moved) {
+        setTwo(); // Only add a new tile if a move happened
+        updateScore();
+        updateHighscore(); // Check and update high score display
+
+        // Check for win condition (2048)
+        if (checkWin()) {
+            gameOver = true;
+            showWinMessage();
+            return; // Stop further execution if the player has won
+        }
+
+        // Check for game over condition
+        if (isGameOver()) {
+            gameOver = true;
+            showGameOver();
+        }
     }
+
+    // Update the score display
+    document.getElementById("score").innerText = score;
 }
 
 // Prevent default scrolling on touch
@@ -362,4 +386,16 @@ function restartGame() {
 
     // Reset the game over flag
     gameOver = false;
+}
+
+function showWinMessage() {
+    // Check if the win message already exists
+    if (document.getElementById("win-message")) {
+        return;
+    }
+
+    let winMessageDiv = document.createElement("div");
+    winMessageDiv.id = "win-message";
+    winMessageDiv.innerText = "Congratulations! You've reached 2048!";
+    document.getElementById("board").append(winMessageDiv);
 }
