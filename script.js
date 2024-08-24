@@ -315,7 +315,8 @@ function handleGesture() {
             return; // Stop further execution if the player has won
         }
 
-        // Check for game over condition
+        // Check for game over condition 
+        
         if (isGameOver()) {
             gameOver = true;
             showGameOver();
@@ -326,15 +327,6 @@ function handleGesture() {
     document.getElementById("score").innerText = score;
 }
 
-
-function checkWin() {
-    for (let tile of tiles) {
-        if (tile.value === 2048) {
-            return true;
-        }
-    }
-    return false;
-}
 
 function showWinMessage() {
     alert("Congratulations! You reached 2048!");
@@ -388,24 +380,12 @@ function isGameOver() {
 }
 
 function showGameOver() {
-    // Check if the game over message already exists
-    if (document.getElementById("game-over")) {
-        return;
-    }
-
-    let gameOverDiv = document.createElement("div");
-    gameOverDiv.id = "game-over";
-    gameOverDiv.innerText = "Game Over!";
-    gameOverDiv.style.position = "fixed";
-    gameOverDiv.style.top = "50%";
-    gameOverDiv.style.left = "50%";
-    gameOverDiv.style.transform = "translate(-50%, -50%)";
-    gameOverDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    gameOverDiv.style.color = "white";
-    gameOverDiv.style.padding = "20px";
-    gameOverDiv.style.fontSize = "2em";
-    gameOverDiv.style.zIndex = "1000"; // Ensure it appears above other content
-    document.body.appendChild(gameOverDiv);
+    const gameOverMessage = document.createElement("div");
+    gameOverMessage.id = "game-over";
+    gameOverMessage.innerHTML = `
+        Game Over<br>Your Score: ${score}
+    `;
+    document.body.appendChild(gameOverMessage);
 }
 
 function restartGame() {

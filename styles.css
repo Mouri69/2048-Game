@@ -99,4 +99,10 @@ button {
         height: calc(100% / 4 - 10px); /* Responsive height */
         font-size: 20px; /* Adjust font size for mobile */
     }
+
+    #game-over {
+        font-size: 18px; /* Adjust font size for mobile */
+        padding: 15px; /* Adjust padding for mobile */
+        width: 90%; /* Adjust width to ensure it fits well */
+    }
 }
