@@ -99,6 +99,29 @@ function updateScore() {
     document.getElementById("score").innerText = score;
 }
 
+
+function checkWin() {
+    for (let tile of tiles) {
+        if (tile.value === 2048) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function showWinMessage() {
+    alert("Congratulations! You reached 2048!");
+}
+
+function triggerConfetti() {
+    // Confetti animation using the canvas-confetti library
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+}
+
 function updateHighscore() {
     if (score > highscore) {
         highscore = score;
@@ -301,6 +324,29 @@ function handleGesture() {
 
     // Update the score display
     document.getElementById("score").innerText = score;
+}
+
+
+function checkWin() {
+    for (let tile of tiles) {
+        if (tile.value === 2048) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function showWinMessage() {
+    alert("Congratulations! You reached 2048!");
+}
+
+function triggerConfetti() {
+    // Confetti animation using the canvas-confetti library
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
 }
 
 // Prevent default scrolling on touch
